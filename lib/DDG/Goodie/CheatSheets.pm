@@ -6,6 +6,7 @@ use DDG::Goodie;
 use DDP;
 use File::Find::Rule;
 use YAML::XS qw(LoadFile);
+use DDG::Meta::Data;
 
 no warnings 'uninitialized';
 
@@ -117,10 +118,15 @@ handle remainder => sub {
     # the current id.
     return unless $lookup->{$data->{template_type}} || $lookup->{$data->{id}};
 
+    my $meta = DDG::Meta::Data->get_ia(id => $data->{id});
+
     return 'Cheat Sheet', structured_answer => {
         id         => 'cheat_sheets',
         dynamic_id => $data->{id},
-        data       => $data,
+        data       => {
+            %$data,
+            meta => $meta,
+        },
         templates  => {
             group   => 'base',
             item    => 0,
