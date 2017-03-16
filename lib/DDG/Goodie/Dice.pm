@@ -180,6 +180,10 @@ handle remainder_lc => sub {
         return; # nothing to return
     }
     
+    if($total eq 'inf' or $total eq '-inf' or $total eq 'nan') { #tests if result overflows
+        return; #nothing returned to prevent breaking the page
+    }
+
     return  $out,
     structured_answer => {
         data => $data,
